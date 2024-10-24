@@ -1,11 +1,10 @@
 import { Form, Input, Button } from "antd";
 import { SignInType } from "../types";
 import { useSignInMutation } from "../hooks/mutation";
-import { useNavigate } from "react-router-dom";
 import "./style.scss"
+import { Notification } from "../../../utils/notification";
 const SignIn = () => {
   const { mutate } = useSignInMutation();
-  const navigate = useNavigate();
   const initialValues: SignInType = {
     username: "",
     password: "",
@@ -13,12 +12,11 @@ const SignIn = () => {
 
   function handleSubmit(values: SignInType): void {
     mutate(values, {
-      onSuccess: (res) => {
-        navigate("./admin-layout");
-        console.log(res);
+      onSuccess: (response) => {
+        console.log(response);
       },
       onError: (error) => {
-        console.log(error.message);
+        Notification("error", error.message)
       },
     });
   }
