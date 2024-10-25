@@ -1,8 +1,8 @@
 import { Form, Input, Button } from "antd";
 import { SignInType } from "../types";
+import { useSignInMutation } from "../hooks/mutation";
 import "./style.scss"
-import { useSignInMutation } from './../hooks/mutation';
-import { Notification } from './../../../utils/notification/index';
+import { Notification } from "../../../utils/notification";
 const SignIn = () => {
   const { mutate } = useSignInMutation();
   const initialValues: SignInType = {
@@ -14,8 +14,6 @@ const SignIn = () => {
     mutate(values, {
       onSuccess: (response) => {
         console.log(response);
-        
-        Notification("success", response?.data?.Message)
       },
       onError: (error) => {
         Notification("error", error.message)
