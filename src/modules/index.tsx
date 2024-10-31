@@ -10,5 +10,13 @@ const Register = loadable(()=> import ("./auth/pages/register"),{
     fallback: <Loading/>
 })
 
+const UserLayout = loadable(()=> import ("./user-layout"),{
+    fallback: <Loading/>
+})
 
-export { SignIn, Register }
+const Product = loadable(()=> import ("./product/pages"),{
+    fallback: <Loading/>
+})
+
+
+export { SignIn, Register, UserLayout, Product }

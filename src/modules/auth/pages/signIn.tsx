@@ -3,7 +3,9 @@ import { SignInType } from "../types";
 import "./style.scss"
 import { useSignInMutation } from './../hooks/mutation';
 import { Notification } from './../../../utils/notification/index';
+import { useNavigate } from "react-router-dom";
 const SignIn = () => {
+  const navigate = useNavigate()
   const { mutate } = useSignInMutation();
   const initialValues: SignInType = {
     username: "",
@@ -13,9 +15,8 @@ const SignIn = () => {
   function handleSubmit(values: SignInType): void {
     mutate(values, {
       onSuccess: (response) => {
-        console.log(response);
-        
         Notification("success", response?.data?.Message)
+        navigate("./user-layout")
       },
       onError: (error) => {
         Notification("error", error.message)
