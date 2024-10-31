@@ -1,11 +1,30 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { useState, useEffect } from 'react';
-import { Button, Col, Drawer, Form, Input, Row, Space, Upload } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
-import { useCreateProduct, useUpdateProduct, useCreateMedia } from "../hooks/mutation"; 
-import { ModalPropType } from './../types/index';
+import { useState, useEffect } from "react";
+import dayjs from 'dayjs';
+import {
+  Button,
+  Col,
+  DatePicker,
+  Drawer,
+  Form,
+  Input,
+  Row,
+  Space,
+  Upload,
+} from "antd";
+import { UploadOutlined } from "@ant-design/icons";
+import {
+  useCreateProduct,
+  useUpdateProduct,
+  useCreateMedia,
+} from "../hooks/mutation";
+import { ModalPropType } from "./../types/index";
 
-const ProductModal: React.FC<ModalPropType> = ({ open, handleClose, update }) => {
+const ProductModal: React.FC<ModalPropType> = ({
+  open,
+  handleClose,
+  update,
+}) => {
   const [form] = Form.useForm();
   const [, setFile] = useState<File | null>(null);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
@@ -19,34 +38,32 @@ const ProductModal: React.FC<ModalPropType> = ({ open, handleClose, update }) =>
 
     if (selectedFile) {
       const formData = new FormData();
-      formData.append('file', selectedFile);
-        const response = await createMedia(formData); 
-        if (response) {
-          setImageUrl(response.data.made_url);
-          console.log(response.data.made_url);
-          
-        } else {
-          console.log("img yuq");
-          
-        }
+      formData.append("file", selectedFile);
+      const response = await createMedia(formData);
+      if (response) {
+        setImageUrl(response.data.made_url);
+        console.log(response.data.made_url);
+      } else {
+        console.log("img yuq");
       }
+    }
   };
 
   const handleSubmit = async () => {
     try {
       const values = await form.validateFields();
-      
+
       const productData: any = {
         name: values.name,
         color: values.color,
-        date_of_creation: values.date_of_creation,
+        date_of_creation: values.date_of_creation ? values.date_of_creation.toISOString() : null,
         made_in: values.made_in,
         model: values.model,
-        image_url: imageUrl, 
+        image_url: imageUrl,
       };
 
       if (update) {
-        productData.id = update.id; 
+        productData.id = update.id;
         updateMutate(productData, {
           onSuccess: () => {
             handleClose();
@@ -66,7 +83,6 @@ const ProductModal: React.FC<ModalPropType> = ({ open, handleClose, update }) =>
           },
         });
       }
-      
     } catch (error) {
       console.error("Form submission failed:", error);
     }
@@ -78,11 +94,11 @@ const ProductModal: React.FC<ModalPropType> = ({ open, handleClose, update }) =>
         form.setFieldsValue({
           name: update.name,
           color: update.color,
-          date_of_creation: update.date_of_creation,
+          date_of_creation: update.date_of_creation ? dayjs(update.date_of_creation) : null, 
           made_in: update.made_in,
           model: update.model,
         });
-        setImageUrl(update.image_url || null); 
+        setImageUrl(update.image_url || null);
         setFile(null);
       } else {
         form.resetFields();
@@ -91,12 +107,10 @@ const ProductModal: React.FC<ModalPropType> = ({ open, handleClose, update }) =>
       }
     }
   }, [open, update, form]);
-
-
   return (
     <Drawer
       title={update ? "Edit Product" : "Create product"}
-      width={720}
+      width={500}
       onClose={handleClose}
       open={open}
       bodyStyle={{ paddingBottom: 80 }}
@@ -115,7 +129,7 @@ const ProductModal: React.FC<ModalPropType> = ({ open, handleClose, update }) =>
             <Form.Item
               name="name"
               label="Name"
-              rules={[{ required: true, message: 'Please enter product name' }]}
+              rules={[{ required: true, message: "Please enter product name" }]}
             >
               <Input placeholder="Please enter product name" />
             </Form.Item>
@@ -124,41 +138,28 @@ const ProductModal: React.FC<ModalPropType> = ({ open, handleClose, update }) =>
             <Form.Item
               name="color"
               label="Color"
-              rules={[{ required: true, message: 'Please enter product color' }]}
+              rules={[
+                { required: true, message: "Please enter product color" },
+              ]}
             >
               <Input placeholder="Please enter product color" />
             </Form.Item>
           </Col>
         </Row>
+
         <Row gutter={16}>
           <Col span={12}>
-            <Form.Item label="Upload Product Image">
-              <Upload
-                beforeUpload={() => false} 
-                onChange={handleFileChange}
-                maxCount={1}
-              >
-                <Button icon={<UploadOutlined />}>Select File</Button>
-              </Upload>
-            </Form.Item>
-          </Col>
-        </Row>
-       
-        <Row gutter={16}>
-          <Col span={12}>
-            <Form.Item
-              name="date_of_creation"
-              label="Date of Creation"
-              rules={[{ required: true, message: 'Please enter date of creation' }]}
-            >
-              <Input placeholder="Please enter date of creation" />
+            <Form.Item name="date_of_creation" label="Date of Creation">
+              <DatePicker />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
               name="made_in"
               label="Made In"
-              rules={[{ required: true, message: 'Please enter where it was made' }]}
+              rules={[
+                { required: true, message: "Please enter where it was made" },
+              ]}
             >
               <Input placeholder="Please enter where it was made" />
             </Form.Item>
@@ -169,12 +170,23 @@ const ProductModal: React.FC<ModalPropType> = ({ open, handleClose, update }) =>
             <Form.Item
               name="model"
               label="Model"
-              rules={[{ required: true, message: 'Please enter the model' }]}
+              rules={[{ required: true, message: "Please enter the model" }]}
             >
               <Input placeholder="Please enter the model" />
             </Form.Item>
           </Col>
-         
+
+          <Col span={12}>
+            <Form.Item label="Upload Product Image">
+              <Upload
+                beforeUpload={() => false}
+                onChange={handleFileChange}
+                maxCount={1}
+              >
+                <Button icon={<UploadOutlined />}>Select File</Button>
+              </Upload>
+            </Form.Item>
+          </Col>
         </Row>
       </Form>
     </Drawer>
