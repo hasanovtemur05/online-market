@@ -142,7 +142,7 @@ const Index = () => {
             />
           </Tooltip>
 
-          <DeleteConform onConfirm={() => handleDelete(record.id)} title="Are you sure to delete this product?">
+          <DeleteConform onConfirm={() => handleDelete(record.id)} title="Are you sure to delete this contract?">
             <Tooltip title="Delete">
               <Button danger icon={<DeleteOutlined />} />
             </Tooltip>

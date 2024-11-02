@@ -108,7 +108,7 @@ const ProductModal: React.FC<ModalPropType> = ({
   }, [open, update, form]);
   return (
     <Drawer
-      title={update ? "Edit Product" : "Create product"}
+      title={update ? "Edit Contract" : "Create Contract"}
       width={500}
       onClose={handleClose}
       open={open}
