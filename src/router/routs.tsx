@@ -6,11 +6,15 @@ export interface AdminType {
 }
 const admin:AdminType[] = [
     {
-        content: "product",
+        content: "Contract",
+        path: "/user-layout/contract",
+        icon: <ProductOutlined style={{ fontSize: "16px" }} />,
+    },
+    {
+        content: "Product",
         path: "/user-layout",
         icon: <ProductOutlined style={{ fontSize: "16px" }} />,
     },
-    
 ];
 
 export default admin;

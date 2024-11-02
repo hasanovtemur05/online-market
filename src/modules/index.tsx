@@ -18,5 +18,9 @@ const Product = loadable(()=> import ("./product/pages"),{
     fallback: <Loading/>
 })
 
+const Contract = loadable(()=> import ("./contract/pages"),{
+    fallback: <Loading/>
+})
 
-export { SignIn, Register, UserLayout, Product }
+
+export { SignIn, Register, UserLayout, Product, Contract }
