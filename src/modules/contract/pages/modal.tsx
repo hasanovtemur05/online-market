@@ -19,7 +19,7 @@ import {
 } from "../hooks/mutation";
 import { ModalPropType } from "../../product/types";
 
-const ProductModal: React.FC<ModalPropType> = ({
+const ContractModal: React.FC<ModalPropType> = ({
   open,
   handleClose,
   update,
@@ -206,4 +206,4 @@ const ProductModal: React.FC<ModalPropType> = ({
   );
 };
 
-export default ProductModal;
+export default ContractModal;

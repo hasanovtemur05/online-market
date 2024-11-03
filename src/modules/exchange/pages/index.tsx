@@ -1,16 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from "react";
 import { ColumnsType } from "antd/es/table";
 import GlobalTable from "../../../components/table";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Loading } from "@components";
-import { Button, Input, Space, Tooltip, } from "antd";
+import { Button, Input, Space, Tooltip } from "antd";
 import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
-import { useGetContract } from "../hooks/queries";
 import { DataItem } from "../../product/types";
-import { ContractType } from "../types";
+import { useGetExchange } from "../hooks/queries";
+import ExchangeModal from "./modal";
 import DeleteConform from "../../../components/popconform";
-import { useDeleteContract } from "../hooks/mutation";
-import ContractModal from "./modal";
+import { useDeleteExchange } from "../hooks/mutation";
 
 const Index = () => {
   const [params, setParams] = useState({
@@ -19,14 +19,14 @@ const Index = () => {
     limit: 3,
   });
   const [total, setTotal] = useState(0);
-  const [updateData, setUpdateData] = useState<ContractType | null>(null);
+  const [updateData, setUpdateData] = useState<any | null>(null);
   const [open, setOpen] = useState(false);  
   const navigate = useNavigate();
-  const { data, isLoading } = useGetContract(params);
+  const { data, isLoading } = useGetExchange(params);
   console.log(data);
   
   const { search } = useLocation();
-  const { mutate: deleteMutate } = useDeleteContract();
+  const { mutate: deleteMutate } = useDeleteExchange();
 
 
 
@@ -96,37 +96,31 @@ const Index = () => {
       render: (_, __, index) => (params.page - 1) * params.limit + index + 1,
     },
     {
-      title: "Name",
-      dataIndex: "consumer_name",
+      title: "amount",
+      dataIndex: "amount",
     },
     {
-      title: "Address",
-      dataIndex: "consumer_address",
+      title: "id",
+      dataIndex: "id",
+      render: (text) => text.replace(/\D/g, ''),
     },
     {
-      title: "Phone number",
-      dataIndex: "consumer_phone_number",
+      title: "price",
+      dataIndex: "price",
     },
+    
+   
     {
-      title: "Passport seria",
-      dataIndex: "consumer_passport_serial",
+      title: "status",
+      dataIndex: "status",
     },
+
     {
-      title: "Created At",
-      dataIndex: "created_at",
-      render: (createdAt) => new Date(createdAt).toLocaleDateString(),
+      title: "product_id",
+      dataIndex: "product_id",
+      render: (text) => text.replace(/\D/g, ''),
     },
-    {
-      title: "Duration",
-      dataIndex: "duration",
-    },
-    {
-      title: "Image",
-      dataIndex: "passport_image",
-      render: (imageUrl) => (
-        <img src={imageUrl} alt="Product Image" style={{ width: 70, height: 50 }} />
-      ),
-    },
+   
     {
       title: "Action",
       key: "action",
@@ -142,7 +136,7 @@ const Index = () => {
             />
           </Tooltip>
 
-          <DeleteConform onConfirm={() => handleDelete(record.id)} title="Are you sure to delete this contract?">
+          <DeleteConform onConfirm={() => handleDelete(record.id)} title="Are you sure to delete this exchange?">
             <Tooltip title="Delete">
               <Button danger icon={<DeleteOutlined />} />
             </Tooltip>
@@ -154,11 +148,11 @@ const Index = () => {
 
   return (
     <>
-      <ContractModal
+      <ExchangeModal
         open={open}
         handleClose={handleClose}
         update={updateData}
-      
+
       />
 
       <div className="flex justify-between px-4 mb-4">
@@ -174,7 +168,7 @@ const Index = () => {
           }}
           type="primary"
         >
-          Create Contract
+          Create Exchange
         </Button>
       </div>
 
@@ -182,7 +176,7 @@ const Index = () => {
 {
   isLoading ? <Loading/> : <GlobalTable
   columns={columns}
-  data={data?.all_contracts}
+  data={data?.all_exchanges}
   pagination={{
     current: params.page,
     pageSize: params.limit,

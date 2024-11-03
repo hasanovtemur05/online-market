@@ -6,7 +6,7 @@ import {
   } from "react-router-dom";
   
   import App from "../App";
-  import { Register, SignIn, Product, UserLayout, Contract } from "@modules";
+  import { Register, SignIn, Product, UserLayout, Contract, Exchange } from "@modules";
 
   const Index = () => {
     const router = createBrowserRouter(
@@ -17,6 +17,8 @@ import {
           <Route path="user-layout" element={<UserLayout />} >
               <Route index element={<Product />} />
               <Route path="contract" element={<Contract />} />
+              <Route path="exchange" element={<Exchange />} />
+
           </Route> 
          {/* <Route path="*" element={<Notfound/>}/> */}
         </Route>
