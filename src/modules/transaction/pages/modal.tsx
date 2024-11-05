@@ -1,51 +1,47 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Form, Input, Modal, Select } from "antd";
 import { useForm } from "antd/es/form/Form";
-import { useEffect } from "react";
-import { useCreateExchange, useUpdateExchange } from "../hooks/mutation";
+import { useCreateTransaction, useUpdateTransaction } from "../hooks/mutation";
 import { ModalPropType } from "../../product/types";
 import { useGetContractId } from "../hooks/queries";
-import { useGetProduct } from "../../product/hooks/queries";
+import { useEffect } from "react";
 
-const CategoryModal = ({ open, handleClose, update,params }: ModalPropType) => {
+const TransactionModal = ({ open, handleClose, update }: ModalPropType) => {
   const [form] = useForm();
   const contractQuery = useGetContractId();
-  const productQuery = useGetProduct(params);
   const contracts = contractQuery.data?.all_contracts || [];
-  const products = productQuery.data?.all_products || []; 
 
-  const { mutate: createMutate } = useCreateExchange();
-  const { mutate: updateMutate } = useUpdateExchange();
+  const { mutate: createMutate } = useCreateTransaction();
+  const { mutate: updateMutate } = useUpdateTransaction();
 
   useEffect(() => {
     if (open && update) {
       form.setFieldsValue({
-        amount: update.amount,
         contract_id: update.contract_id,
-        product_id: update.product_id,
         price: update.price,
-        status: update.status,
+        duration: update.duration, 
       });
     } else {
       form.resetFields();
     }
   }, [open, update, form]);
 
+
   const handleSubmit = (values: any) => {
-    const payload = {
+    const payload: any = {
       ...values,
-      amount: Number(values.amount), 
-      price: Number(values.price), 
+      price: Number(values.price),
     };
 
     if (update) {
-      payload.id = update.id; 
+      payload.id = update.id;
+      payload.duration = Number(values.duration); 
       updateMutate(payload, {
         onSuccess: () => {
           handleClose();
         },
         onError: (error) => {
-          console.error( error);
+          console.error(error);
           handleClose();
         },
       });
@@ -55,12 +51,11 @@ const CategoryModal = ({ open, handleClose, update,params }: ModalPropType) => {
           handleClose();
         },
         onError: (error) => {
-          console.error( error);
+          console.error(error);
           handleClose();
         },
       });
     }
-    
   };
 
   return (
@@ -71,14 +66,6 @@ const CategoryModal = ({ open, handleClose, update,params }: ModalPropType) => {
       footer={null}
     >
       <Form layout="vertical" onFinish={handleSubmit} form={form}>
-        <Form.Item
-          label="Amount"
-          name="amount"
-          rules={[{ required: true, message: "Please enter amount" }]}
-        >
-          <Input type="number" placeholder="Enter amount" />
-        </Form.Item>
-
         <Form.Item
           label="Contract ID"
           name="contract_id"
@@ -101,27 +88,15 @@ const CategoryModal = ({ open, handleClose, update,params }: ModalPropType) => {
           <Input type="number" placeholder="Enter price" />
         </Form.Item>
 
-        <Form.Item
-          label="Product ID"
-          name="product_id"
-          rules={[{ required: true, message: "Please select a product ID!" }]}
-        >
-          <Select placeholder="Select a product">
-            {products.map((item: any) => (
-              <Select.Option key={item.id.toString()} value={item.id.toString()}>
-                {item.name}
-              </Select.Option>
-            ))}
-          </Select>
-        </Form.Item>
-
-        <Form.Item
-          label="Status"
-          name="status"
-          rules={[{ required: true, message: "Please enter status" }]}
-        >
-          <Input placeholder="Enter status" />
-        </Form.Item>
+        {update && (
+          <Form.Item
+            label="duration"
+            name="duration"
+            rules={[{ required: true, message: "Please enter duration" }]}
+          >
+            <Input type="number" placeholder="Enter duration" />
+          </Form.Item>
+        )}
 
         <Form.Item>
           <Button type="primary" htmlType="submit" block>
@@ -133,4 +108,4 @@ const CategoryModal = ({ open, handleClose, update,params }: ModalPropType) => {
   );
 };
 
-export default CategoryModal;
+export default TransactionModal;

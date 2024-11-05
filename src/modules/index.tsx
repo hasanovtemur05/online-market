@@ -26,4 +26,8 @@ const Exchange = loadable(()=> import ("./exchange/pages"),{
     fallback: <Loading/>
 })
 
-export { SignIn, Register, UserLayout, Product, Contract, Exchange }
+const Transaction = loadable(()=> import ("./transaction/pages"),{
+    fallback: <Loading/>
+})
+
+export { SignIn, Register, UserLayout, Product, Contract, Exchange, Transaction }

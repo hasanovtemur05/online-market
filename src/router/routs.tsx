@@ -20,6 +20,11 @@ const admin:AdminType[] = [
         path: "/user-layout/exchange",
         icon: <ProductOutlined style={{ fontSize: "16px" }} />,
     },
+    {
+        content: "Transaction",
+        path: "/user-layout/transaction",
+        icon: <ProductOutlined style={{ fontSize: "16px" }} />,
+    },
 ];
 
 export default admin;

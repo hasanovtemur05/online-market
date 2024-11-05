@@ -1,5 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
+import { ParamsType } from "@types";
+
 export type DataItem = any
 
 export interface ProductType {
@@ -17,6 +19,7 @@ export interface ProductType {
 export interface ModalPropType {
     open: boolean
     handleClose: ()=> void
-    update?: any
+    update?: any;
+    params?:ParamsType
     
 }

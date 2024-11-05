@@ -16,6 +16,8 @@ const SignIn = () => {
     mutate(values, {
       onSuccess: (response) => {
         Notification("success", response?.data?.Message)
+        const access_token = response?.data?.AccessToken
+        localStorage.setItem("access_token",access_token );
         navigate("./user-layout")
       },
       onError: (error) => {

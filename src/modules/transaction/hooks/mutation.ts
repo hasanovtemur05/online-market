@@ -1,22 +1,23 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { createExchange, deleteExchange,  updateExchange,  } from "../service"
+import { createTransaction, deleteTransaction, updateTransaction } from "../service"
 import { Notification } from "../../../utils/notification"
-import { ExchangeType } from "../types"
+import { TransactionType } from "../types"
 
 
 // =================================  CREATE  ====================================
-export function useCreateExchange () {
+export function useCreateTransaction () {
     const queryClient = useQueryClient()
     return useMutation({
-        mutationFn: (data:ExchangeType) => createExchange(data),
+        mutationFn: (data:TransactionType) => createTransaction(data),
         onSuccess: (response)=>{
-            queryClient.invalidateQueries({queryKey: ['exchange']})
+            queryClient.invalidateQueries({queryKey: ['transaction']})
             Notification('success', response?.message)
 
         },
        onError: (error)=> {
             Notification("error", error.message)
-            queryClient.invalidateQueries({queryKey: ['exchange']})
+            queryClient.invalidateQueries({queryKey: ['transaction']})
        }
        
 
@@ -27,16 +28,16 @@ export function useCreateExchange () {
 
 
 // =================================  UPDATE  ====================================
-export function useUpdateExchange () {
+export function useUpdateTransaction () {
     const queryClient = useQueryClient()
     return useMutation({
-        mutationFn: (data:ExchangeType) => updateExchange(data.id, data),
+        mutationFn: (data:any) => updateTransaction(data.id, data),
         onSuccess: (response)=>{
-            queryClient.invalidateQueries({queryKey: ['exchange']})
+            queryClient.invalidateQueries({queryKey: ['transaction']})
             Notification('success', response?.message) 
         },
        onError: (error)=> {
-            queryClient.invalidateQueries({queryKey: ['exchange']})
+            queryClient.invalidateQueries({queryKey: ['transaction']})
             Notification("error", error.message)
 
        }
@@ -50,17 +51,17 @@ export function useUpdateExchange () {
 
 
 // =================================  DELETE  ====================================
-export function useDeleteExchange () {
+export function useDeleteTransaction () {
     const queryClient = useQueryClient()
     return useMutation({
-        mutationFn: (id:number) => deleteExchange(id),
+        mutationFn: (id:number) => deleteTransaction(id),
         onSuccess: (response)=>{
-            queryClient.invalidateQueries({queryKey: ['exchange']})
+            queryClient.invalidateQueries({queryKey: ['transaction']})
             Notification('success', response?.message)            
 
         },
        onError: (error)=> {
-            queryClient.invalidateQueries({queryKey: ['exchange']})
+            queryClient.invalidateQueries({queryKey: ['transaction']})
             Notification("error", error.message)
 
        }
