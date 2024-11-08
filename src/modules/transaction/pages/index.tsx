@@ -141,10 +141,9 @@ const Index = () => {
   return (
     <>
       <TransactionModal
-          open={open}
-          handleClose={handleClose}
-          update={updateData}
-      />
+        open={open}
+        handleClose={handleClose}
+        update={updateData} params={params}      />
       <div className="flex justify-between px-4 mb-4">
         <Input
           placeholder="search..."

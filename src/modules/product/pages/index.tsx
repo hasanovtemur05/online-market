@@ -156,6 +156,7 @@ const Index = () => {
         open={open}
         handleClose={handleClose}
         update={updateData}
+        params={params}
       />
 
       <div className="flex justify-between px-4 mb-4">
