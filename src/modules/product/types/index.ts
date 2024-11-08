@@ -20,6 +20,6 @@ export interface ModalPropType {
     open: boolean
     handleClose: ()=> void
     update?: any;
-    params?:ParamsType
+    params:ParamsType
     
 }

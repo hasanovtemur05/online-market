@@ -7,7 +7,7 @@ import { ModalPropType } from "../../product/types";
 import { useGetContractId } from "../hooks/queries";
 import { useGetProduct } from "../../product/hooks/queries";
 
-const CategoryModal = ({ open, handleClose, update,params }: ModalPropType) => {
+const CategoryModal = ({ open, handleClose, update, }: ModalPropType) => {
   const [form] = useForm();
   const contractQuery = useGetContractId();
   const productQuery = useGetProduct(params);
